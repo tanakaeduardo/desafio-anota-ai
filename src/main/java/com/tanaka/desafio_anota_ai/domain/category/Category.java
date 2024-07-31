@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Category {
 	
 	@Id
-	private String Id;
+	private String id;
 	private String title;
 	private String description;
 	private String ownerId;

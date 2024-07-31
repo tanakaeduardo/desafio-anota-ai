@@ -17,7 +17,7 @@ public class ProductService {
 	private ProductRepository repository;
 	private CategoryService categoryService;
 	
-	public ProductService(ProductRepository repository,  CategoryService categoryService) {
+	public ProductService( CategoryService categoryService, ProductRepository repository) {
 		this.repository = repository;
 		this.categoryService = categoryService;
 	}
@@ -36,18 +36,19 @@ public class ProductService {
 	}
 	
 	public Product update (String id, ProductDTO productData) {
+		
 		Product product = this.repository.findById(id)
 				.orElseThrow(ProductNotFoundException :: new);
-		this.categoryService.getById(productData.categoryId())
-				.ifPresent(product::setCategory);
+		if(productData.categoryId() != null) {
+			this.categoryService.getById(productData.categoryId())
+			.ifPresent(product::setCategory);
+		}
+
 		if(!productData.title().isEmpty()) {
 			product.setTitle(productData.title());
 		}
 		if(!productData.description().isEmpty()) {
 			product.setDescripction(productData.description());
-		}
-		if(!productData.ownerId().isEmpty()) {
-			product.setOwnerId(productData.ownerId());
 		}
 		if(productData.price() != null) {
 			product.setPrice(productData.price());

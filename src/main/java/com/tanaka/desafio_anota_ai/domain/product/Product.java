@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Document(collation = "products")
+@Document(collection = "products")
 @Getter
 @Setter
 @NoArgsConstructor
