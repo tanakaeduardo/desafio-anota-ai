@@ -10,16 +10,22 @@ import com.tanaka.desafio_anota_ai.domain.product.Product;
 import com.tanaka.desafio_anota_ai.domain.product.ProductDTO;
 import com.tanaka.desafio_anota_ai.domain.product.Exceptions.ProductNotFoundException;
 import com.tanaka.desafio_anota_ai.repositories.ProductRepository;
+import com.tanaka.desafio_anota_ai.services.aws.AwsSnsService;
+import com.tanaka.desafio_anota_ai.services.aws.MessageDTO;
 
 @Service
 public class ProductService {
 	
-	private ProductRepository repository;
 	private CategoryService categoryService;
 	
-	public ProductService( CategoryService categoryService, ProductRepository repository) {
+	private ProductRepository repository;
+	private final AwsSnsService snsService;
+
+	
+	public ProductService( CategoryService categoryService, ProductRepository repository, AwsSnsService snsService) {
 		this.repository = repository;
 		this.categoryService = categoryService;
+		this.snsService = snsService;
 	}
 	
 	public Product insert (ProductDTO productData) {
@@ -28,6 +34,9 @@ public class ProductService {
 		Product newProduct = new Product(productData);
 		newProduct.setCategory(category);
 		this.repository.save(newProduct);
+		
+		this.snsService.publish(new MessageDTO(newProduct.getOwnerId()));
+		
 		return newProduct;
 	}
 	
@@ -55,6 +64,9 @@ public class ProductService {
 		}
 		
 		this.repository.save(product);
+		
+		this.snsService.publish(new MessageDTO(product.getOwnerId()));
+		
 		return product;
 	}
 	
