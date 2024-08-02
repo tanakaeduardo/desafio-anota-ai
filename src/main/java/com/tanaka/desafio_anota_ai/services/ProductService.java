@@ -18,11 +18,15 @@ public class ProductService {
 	
 	private CategoryService categoryService;
 	
+<<<<<<< HEAD
 	private ProductRepository repository;
 	private final AwsSnsService snsService;
 
 	
 	public ProductService( CategoryService categoryService, ProductRepository repository, AwsSnsService snsService) {
+=======
+	public ProductService(ProductRepository repository,  CategoryService categoryService) {
+>>>>>>> parent of 44f59d1 (ajuste CRUD)
 		this.repository = repository;
 		this.categoryService = categoryService;
 		this.snsService = snsService;
@@ -45,19 +49,18 @@ public class ProductService {
 	}
 	
 	public Product update (String id, ProductDTO productData) {
-		
 		Product product = this.repository.findById(id)
 				.orElseThrow(ProductNotFoundException :: new);
-		if(productData.categoryId() != null) {
-			this.categoryService.getById(productData.categoryId())
-			.ifPresent(product::setCategory);
-		}
-
+		this.categoryService.getById(productData.categoryId())
+				.ifPresent(product::setCategory);
 		if(!productData.title().isEmpty()) {
 			product.setTitle(productData.title());
 		}
 		if(!productData.description().isEmpty()) {
 			product.setDescripction(productData.description());
+		}
+		if(!productData.ownerId().isEmpty()) {
+			product.setOwnerId(productData.ownerId());
 		}
 		if(productData.price() != null) {
 			product.setPrice(productData.price());

@@ -16,6 +16,8 @@ import com.tanaka.desafio_anota_ai.domain.category.Category;
 import com.tanaka.desafio_anota_ai.domain.category.CategoryDTO;
 import com.tanaka.desafio_anota_ai.services.CategoryService;
 
+import jakarta.websocket.server.PathParam;
+
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
