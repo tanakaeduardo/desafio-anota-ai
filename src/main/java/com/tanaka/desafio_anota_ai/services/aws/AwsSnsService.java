@@ -19,7 +19,7 @@ public class AwsSnsService {
 	}
 	
 	public void publish(MessageDTO message) {
-		this.snsCliente.publish(catalogTopic.getTopicArn(), message.toString());
+		this.snsCliente.publish(catalogTopic.getTopicArn(), message.message());
 		
 	}
 
